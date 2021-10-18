@@ -184,7 +184,25 @@ class IteratedFunction:
         else:
             self.point = startingPoint
         self.steps = steps
+        self.randomState = random.getstate()
+
+    def drawPoint(self):
+        glColor3f(0.9, 0.9, 0.9)
+        glPointSize(1.0)
+        glBegin(GL_POINTS)
+        glVertex2f(self.point.x, self.point.y)
+        glEnd()
+
+    def transformPoint(self):
+        i = random.randrange(0, 4)
+        fi = self.functions[i]
+        x = self.point.x
+        y = self.point.y
+        self.point.x = fi['a'] * x + fi['b'] * y + fi['c']
+        self.point.y = fi['d'] * x + fi['e'] * y + fi['f']
 
     def draw(self):
+        random.setstate(self.randomState)
         for index in range(0, self.steps):
-            function = random.randrange(0, 5)
+            self.drawPoint()
+            self.transformPoint()

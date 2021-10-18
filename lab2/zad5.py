@@ -5,8 +5,9 @@ from OpenGL.GL import *
 from lab2.shapes import IteratedFunction
 
 x, y = 0, 0
+steps = 10_000
 
-system = IteratedFunction()
+system = IteratedFunction(steps=steps)
 
 def update_viewport(window, width, height):
     if height == 0:
