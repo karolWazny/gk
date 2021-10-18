@@ -1,17 +1,14 @@
 import sys
-from random import random
-
 from glfw.GLFW import *
 from OpenGL.GL import *
-import random
 
-from lab2.shapes import rectangle, ColoredRectangle, Point
+from lab2.shapes import rectangle, Sierpinski, Point
 
-random.seed()
 x, y = 0, 0
 a, b = 130, 80
-d = 0.3
-rect = ColoredRectangle(Point(x, y), Point(a, b),d)
+d = 5
+
+sierpinski = Sierpinski(Point(x, y), Point(a, a), depth=d)
 
 def update_viewport(window, width, height):
     if height == 0:
@@ -45,7 +42,7 @@ def render(time):
     # W tym przykładzie jest to wyczyszczenie ramki w pamięci –glClear()
     glClear(GL_COLOR_BUFFER_BIT)
     # Następnie zawartość pamięci jest przesyłana do wyświetlenia –glFlush()
-    rect.draw()
+    sierpinski.draw()
     glFlush()
     # Najistotniejsza funkcja programu
 
