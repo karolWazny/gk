@@ -134,6 +134,7 @@ class ColoredRectangle:
         ]
         colorTriangle(vertices, colors)
 
+
 class Sierpinski:
     def __init__(self, coordinates=None, dimensions=None, depth=1, color1=None, color2=None):
         if dimensions is None:
@@ -167,3 +168,23 @@ class Sierpinski:
             for j in range(-1, 2):
                 smallerCoords = Point(coordinates.x + i * smallerDimensions.x, coordinates.y + j * smallerDimensions.y)
                 self.holesRecursively(smallerDimensions, smallerCoords, depth - 1)
+
+
+class IteratedFunction:
+    functions = [
+        {'a': -0.67, 'b': -0.02, 'c': 0.00, 'd': -0.18, 'e': 0.81, 'f': 10.0},
+        {'a': 0.40, 'b': 0.40, 'c': 0.00, 'd': -0.10, 'e': 0.40, 'f': 0.0},
+        {'a': -0.40, 'b': -0.40, 'c': 0.00, 'd': -0.10, 'e': 0.40, 'f': 0.0},
+        {'a': -0.10, 'b': 0.0, 'c': 0.00, 'd': 0.44, 'e': 0.44, 'f': -2.0}
+    ]
+
+    def __init__(self, startingPoint=None, steps=10):
+        if startingPoint is None:
+            self.point = Point()
+        else:
+            self.point = startingPoint
+        self.steps = steps
+
+    def draw(self):
+        for index in range(0, self.steps):
+            function = random.randrange(0, 5)
