@@ -1,13 +1,9 @@
 import sys
 from glfw.GLFW import *
 from OpenGL.GL import *
-
-from lab2.shapes import triangle
-
-"""
-Funkcje pomocnicze, docelowo wykonywane jednorazowo.
-–Wprowadzone zostały dla przejrzystości kodu na kolejnych zajęciach.
-"""
+from OpenGL.GLU import *
+import numpy
+from shapes import colorTriangle
 
 
 def update_viewport(window, width, height):
@@ -29,7 +25,7 @@ def update_viewport(window, width, height):
 
 def startup():
     # Ustawiamy wartość koloru, do jakiego będzie czyszczony bufor.
-    glClearColor(0.5, 0.5, 0.5, 1.0)
+    glClearColor(0, 0, 0.1, 1.0)
     update_viewport(None, 400, 400)
 
 
@@ -42,7 +38,7 @@ def render(time):
     # W tym przykładzie jest to wyczyszczenie ramki w pamięci –glClear()
     glClear(GL_COLOR_BUFFER_BIT)
     # Następnie zawartość pamięci jest przesyłana do wyświetlenia –glFlush()
-    triangle()
+    colorTriangle()
     glFlush()
     # Najistotniejsza funkcja programu
 
