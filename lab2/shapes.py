@@ -166,8 +166,9 @@ class Sierpinski:
         rectangle(x=coordinates.x, y=coordinates.y, a=dimensions.x / 3, b=dimensions.y / 3, color=self.color2)
         for i in range(-1, 2):
             for j in range(-1, 2):
-                smallerCoords = Point(coordinates.x + i * smallerDimensions.x, coordinates.y + j * smallerDimensions.y)
-                self.holesRecursively(smallerDimensions, smallerCoords, depth - 1)
+                if not not (i or j):
+                    smallerCoords = Point(coordinates.x + i * smallerDimensions.x, coordinates.y + j * smallerDimensions.y)
+                    self.holesRecursively(smallerDimensions, smallerCoords, depth - 1)
 
 
 class IteratedFunction:

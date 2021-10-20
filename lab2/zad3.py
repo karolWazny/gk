@@ -10,7 +10,7 @@ from lab2.shapes import rectangle, ColoredRectangle, Point
 random.seed()
 x, y = 0, 0
 a, b = 130, 80
-d = 0.3
+d = 0
 rect = ColoredRectangle(Point(x, y), Point(a, b),d)
 
 def update_viewport(window, width, height):
