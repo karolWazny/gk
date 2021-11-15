@@ -11,7 +11,7 @@ class FirstRenderer(Renderer):
     def render(self, time):
         common.axes()
         self.egg.draw()
-        common.spin(numpy.sqrt(time) * 0.05)
+        common.spin(0.1)
 
 if __name__ == '__main__':
     main(FirstRenderer())
