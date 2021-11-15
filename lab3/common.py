@@ -18,6 +18,25 @@ class Point:
     def __add__(self, other):
         return Point(self.x + other.x, self.y + other.y, self.z + other.z, self.r, self.g, self.b)
 
+    def __sub__(self, other):
+        return Point(self.x - other.x, self.y - other.y, self.z - other.z, self.r, self.g, self.b)
+
+    def __mul__(self, other):
+        return Point(self.x * other, self.y * other, self.z * other, self.r, self.g, self.b)
+
+    def normalized(self):
+        invLength = (self.x ** 2 + self.y ** 2 + self.z ** 2) ** -0.5
+        return self * invLength
+
+    def length(self):
+        return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
+
+    def draw(self):
+        glBegin(GL_POINTS)
+        glColor3f(self.r, self.g, self.b)
+        glVertex3f(self.x, self.y, self.z)
+        glEnd()
+
 
 def triangle(vertices=None, color=None):
     if vertices is None:
@@ -236,7 +255,9 @@ def spin(angle):
 
 
 class Egg:
-    def __init__(self, samples=5, scaling=1, translation=Point(), mode="points"):
+    def __init__(self, samples=5, scaling=1, translation=Point(), mode="points", color=None):
+        self.colorWasNone = color is None
+        self.translation = translation
         self.samples = samples
         self.space = np.linspace(0, 1, samples)
         self.scaling = scaling
@@ -251,21 +272,24 @@ class Egg:
         self.points = numpy.array(rows)
 
         self.vertexColors = None
-        if mode == "triangles":
+        if mode == "triangles" and color is None:
             rows = []
             for u in range(0, samples):
                 row = []
                 for v in range(0, samples):
-                    color = numpy.array([random.random(), random.random(), random.random()])
-                    row.append(color)
+                    vertexColor = numpy.array([random.random(), random.random(), random.random()])
+                    row.append(vertexColor)
                 rows.append(numpy.array(row))
             self.vertexColors = numpy.array(rows)
 
             for u in range(0, samples):
-                self.vertexColors[u][0] = self.vertexColors[samples - u - 1][samples - 1]
-                self.vertexColors[u][0] = self.vertexColors[samples - u - 1][samples - 1]
-
+                self.vertexColors[u][0] = self.vertexColors[samples - u - 1][-1]
         self.mode = mode
+
+        if color is not None:
+            self.color = color
+        else:
+            self.color = numpy.array([1.0, 1.0, 0.0])
 
     def draw(self):
         if self.mode == "lines":
@@ -278,66 +302,88 @@ class Egg:
     def draw_triangles(self):
         glBegin(GL_TRIANGLES)
 
-        for u in range(0, self.samples):
+        if self.colorWasNone:
+            for u in range(0, self.samples):
 
-            for v in range(1, self.samples):
-                point = self.points[u - 1][v - 1]
-                pointColor = self.vertexColors[u - 1][v - 1]
+                for v in range(1, self.samples):
+                    point = self.points[u - 1][v - 1] + self.translation
+                    pointColor = self.vertexColors[u - 1][v - 1]
 
-                secondPoint = self.points[u - 1][v]
-                secondColor = self.vertexColors[u - 1][v]
+                    secondPoint = self.points[u - 1][v] + self.translation
+                    secondColor = self.vertexColors[u - 1][v]
 
-                belowPoint = self.points[u - 2][v - 1]
-                belowColor = self.vertexColors[u - 2][v - 1]
+                    belowPoint = self.points[u - 2][v - 1] + self.translation
+                    belowColor = self.vertexColors[u - 2][v - 1]
 
-                abovePoint = self.points[u][v]
-                aboveColor = self.vertexColors[u][v]
+                    abovePoint = self.points[u][v] + self.translation
+                    aboveColor = self.vertexColors[u][v]
 
-                glColor3f(pointColor[0], pointColor[1], pointColor[2])
-                glVertex3f(point.x, point.y, point.z)
+                    glColor3f(pointColor[0], pointColor[1], pointColor[2])
+                    glVertex3f(point.x, point.y, point.z)
 
-                glColor3f(secondColor[0], secondColor[1], secondColor[2])
-                glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
+                    glColor3f(secondColor[0], secondColor[1], secondColor[2])
+                    glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
 
-                glColor3f(aboveColor[0], aboveColor[1], aboveColor[2])
-                glVertex3f(abovePoint.x, abovePoint.y, abovePoint.z)
+                    glColor3f(aboveColor[0], aboveColor[1], aboveColor[2])
+                    glVertex3f(abovePoint.x, abovePoint.y, abovePoint.z)
 
-                glColor3f(pointColor[0], pointColor[1], pointColor[2])
-                glVertex3f(point.x, point.y, point.z)
+                    glColor3f(pointColor[0], pointColor[1], pointColor[2])
+                    glVertex3f(point.x, point.y, point.z)
 
-                glColor3f(secondColor[0], secondColor[1], secondColor[2])
-                glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
+                    glColor3f(secondColor[0], secondColor[1], secondColor[2])
+                    glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
 
-                glColor3f(belowColor[0], belowColor[1], belowColor[2])
-                glVertex3f(belowPoint.x, belowPoint.y, belowPoint.z)
+                    glColor3f(belowColor[0], belowColor[1], belowColor[2])
+                    glVertex3f(belowPoint.x, belowPoint.y, belowPoint.z)
+        else:
+            glColor3f(self.color[0], self.color[1], self.color[2])
+            for u in range(0, self.samples):
+
+                for v in range(1, self.samples):
+                    point = self.points[u - 1][v - 1] + self.translation
+
+                    secondPoint = self.points[u - 1][v] + self.translation
+
+                    belowPoint = self.points[u - 2][v - 1] + self.translation
+
+                    abovePoint = self.points[u][v] + self.translation
+
+                    glVertex3f(point.x, point.y, point.z)
+                    glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
+                    glVertex3f(abovePoint.x, abovePoint.y, abovePoint.z)
+
+                    glVertex3f(point.x, point.y, point.z)
+                    glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
+                    glVertex3f(belowPoint.x, belowPoint.y, belowPoint.z)
         glEnd()
 
     def draw_lines(self):
         glBegin(GL_LINES)
-        glColor3f(1.0, 1.0, 0.0)
+        glColor3f(self.color[0], self.color[1], self.color[2])
         for u in range(0, self.samples):
             for v in range(1, self.samples):
-                point = self.points[u - 1][v - 1]
+                point = self.points[u - 1][v - 1] + self.translation
 
-                nextPoint = self.points[u - 1][v]
+                nextPoint = self.points[u - 1][v] + self.translation
                 glVertex3f(point.x, point.y, point.z)
                 glVertex3f(nextPoint.x, nextPoint.y, nextPoint.z)
 
-                nextPoint = self.points[u][v - 1]
+                nextPoint = self.points[u][v - 1] + self.translation
                 glVertex3f(point.x, point.y, point.z)
                 glVertex3f(nextPoint.x, nextPoint.y, nextPoint.z)
         glEnd()
 
     def draw_points(self):
         glBegin(GL_POINTS)
-        glColor3f(1.0, 1.0, 0.0)
+        glColor3f(self.color[0], self.color[1], self.color[2])
         for row in self.points:
             for point in row:
-                glVertex3f(point.x, point.y, point.z)
+                drawnPoint = point + self.translation
+                glVertex3f(drawnPoint.x, drawnPoint.y, drawnPoint.z)
         glEnd()
 
     def calculate_point(self, u, v):
-        return Point(self.x_from(u, v), self.y_from(u, v), self.z_from(u, v)) + self.translation
+        return Point(self.x_from(u, v), self.y_from(u, v), self.z_from(u, v))
 
     def x_from(self, u, v):
         u2 = u * u
@@ -358,3 +404,14 @@ class Egg:
         u4 = u3 * u
         u5 = u4 * u
         return (-90 * u5 + 225 * u4 - 270 * u3 + 180 * u2 - 45 * u) * numpy.sin(numpy.pi * v) * self.scaling
+
+
+class Sphere(Egg):
+    def x_from(self, u, v):
+        return numpy.sin(numpy.pi * v) * numpy.sin(2 * numpy.pi * u) * self.scaling
+
+    def y_from(self, u, v):
+        return -numpy.cos(2 * numpy.pi * u) * self.scaling
+
+    def z_from(self, u, v):
+        return numpy.sin(2 * numpy.pi * u) * numpy.cos(numpy.pi * v) * self.scaling

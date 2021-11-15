@@ -18,9 +18,9 @@ def update_viewport(window, width, height):
     glViewport(0, 0, width, height)
     glLoadIdentity()
     if width <= height:
-        glOrtho(-100.0, 100.0, -100.0 / aspectRatio, 100.0 / aspectRatio, 100.0, -100.0)
+        glOrtho(-100.0, 100.0, -100.0 / aspectRatio, 100.0 / aspectRatio, 1000.0, -1000.0)
     else:
-        glOrtho(-100.0 * aspectRatio, 100.0 * aspectRatio, -100.0, 100.0, 100.0, -100.0)
+        glOrtho(-100.0 * aspectRatio, 100.0 * aspectRatio, -100.0, 100.0, 1000.0, -1000.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
