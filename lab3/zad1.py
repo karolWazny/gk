@@ -6,7 +6,7 @@ import common
 
 class FirstRenderer(Renderer):
     def __init__(self):
-        self.egg = common.Egg(samples=50, scaling=8, translation=common.Point(0, -35, 0))
+        self.egg = common.Egg(samples=50, scaling=16, translation=common.Point(0, -70, 0))
 
     def render(self, time):
         common.axes()

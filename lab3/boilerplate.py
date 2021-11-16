@@ -1,3 +1,4 @@
+import math
 import sys
 
 import numpy as np
@@ -18,11 +19,14 @@ def update_viewport(window, width, height):
     glViewport(0, 0, width, height)
     glLoadIdentity()
     if width <= height:
-        glOrtho(-100.0, 100.0, -100.0 / aspectRatio, 100.0 / aspectRatio, 1000.0, -1000.0)
+        # glOrtho(-100.0, 100.0, -100.0 / aspectRatio, 100.0 / aspectRatio, 1000.0, -1000.0)
+        gluPerspective(60, aspectRatio, 1.0, 1000000.0)
     else:
-        glOrtho(-100.0 * aspectRatio, 100.0 * aspectRatio, -100.0, 100.0, 1000.0, -1000.0)
+        # glOrtho(-100.0 * aspectRatio, 100.0 * aspectRatio, -100.0, 100.0, 1000.0, -1000.0)
+        gluPerspective(60, aspectRatio, 1.0, 1000000.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
+    glTranslatef(0.0, 0.0, -200.0)
 
 
 def startup():

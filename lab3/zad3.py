@@ -6,7 +6,7 @@ import common
 
 class ThirdRenderer(Renderer):
     def __init__(self):
-        self.egg = common.Egg(samples=30, scaling=8, translation=common.Point(0, -35, 0), mode="triangles")
+        self.egg = common.Egg(samples=30, scaling=16, translation=common.Point(0, -70, 0), mode="triangles")
 
     def render(self, time):
         common.axes()

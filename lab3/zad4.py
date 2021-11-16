@@ -3,9 +3,9 @@ import numpy
 from boilerplate import *
 import common
 
-TIME_CONSTANT = 0.001
-GRAVITY_CONSTANT = 0.00001
-NUMBER_OF_LOGS = 10_000
+TIME_CONSTANT = 0.005
+GRAVITY_CONSTANT = 0.00005
+NUMBER_OF_LOGS = 1000
 
 
 class Planet:
@@ -72,7 +72,7 @@ class PlanetSystem:
             planet.updatePosition()
             if self.loggingOn:
                 self.loggedPositions.append(planet.logPosition())
-        if len(self.loggedPositions) >= 1_000 * len(self.planets):
+        if len(self.loggedPositions) >= NUMBER_OF_LOGS * len(self.planets):
             self.loggedPositions = self.loggedPositions[len(self.planets) * 50:-1]
 
 
@@ -80,16 +80,19 @@ class FourthRenderer(Renderer):
     def __init__(self):
         sun = Planet(mass=100_000_000, size=8, color=numpy.array([1.0, 1.0, 0.0]))
         redPlanet = Planet(velocity=common.Point(0, 0, 80), position=common.Point(65, 20, 0),
-                           color=numpy.array([1.0, 0.0, 0.0]), mass=150)
+                           color=numpy.array([1.0, 0.0, 0.0]), mass=200)
         bluePlanet = Planet(velocity=common.Point(0, 0, 100), position=common.Point(50, 0, 0),
                             color=numpy.array([0.0, 0.0, 1.0]))
         greenPlanet = Planet(velocity=common.Point(0, 0, 50), position=common.Point(90, -10, 0),
                              color=numpy.array([0.0, 1.0, 0.0]), mass=50)
+        purpleComet = Planet(velocity=common.Point(0, 0, 300), position=common.Point(15, -15, 0),
+                             color=numpy.array([1.0, 0.0, 1.0]), mass=10, size=0.3)
         self.system = PlanetSystem(loggingOn=True)
         self.system.planets.append(sun)
         self.system.planets.append(bluePlanet)
         self.system.planets.append(redPlanet)
         self.system.planets.append(greenPlanet)
+        self.system.planets.append(purpleComet)
 
     def render(self, time):
         common.axes()
