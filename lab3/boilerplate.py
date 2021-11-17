@@ -10,6 +10,9 @@ import random
 
 from lab3 import common
 
+theta = 0.0
+phi = 0.0
+
 delta_x = 0
 delta_y = 0
 mouse_x_pos_old = 0
