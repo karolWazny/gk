@@ -28,7 +28,6 @@ class FourthRenderer(Renderer):
         self.system.updateVelocity()
         self.system.updatePosition()
         self.system.draw()
-        common.spin(0.2)
 
 
 if __name__ == '__main__':

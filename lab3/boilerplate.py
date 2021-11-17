@@ -8,6 +8,8 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import random
 
+from lab3 import common
+
 delta_x = 0
 delta_y = 0
 mouse_x_pos_old = 0
@@ -70,6 +72,8 @@ class Renderer:
             angle_y = delta_y * PIXEL_TO_ANGLE
             glRotatef(angle_y, modelViewMatrix[0][0], modelViewMatrix[1][0], modelViewMatrix[2][0])
             delta_y = 0
+        else:
+            common.spin(0.15)
 
         if points_scrolled != 0:
             glMatrixMode(GL_PROJECTION)

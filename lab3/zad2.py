@@ -11,7 +11,6 @@ class SecondRenderer(Renderer):
     def render(self, time):
         common.axes()
         self.egg.draw()
-        common.spin(0.1)
 
 if __name__ == '__main__':
     main(SecondRenderer())
