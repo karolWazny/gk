@@ -8,7 +8,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import random
 
-from lab3 import common
+import common
 
 theta = 0.0
 phi = 0.0

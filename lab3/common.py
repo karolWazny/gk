@@ -234,17 +234,17 @@ class IteratedFunction:
             self.transformPoint()
 
 
-def axes():
+def axes(l=5.0):
     glBegin(GL_LINES)
     glColor3f(1.0, 0.0, 0.0)
-    glVertex3f(-5.0, 0.0, 0.0)
-    glVertex3f(5.0, 0.0, 0.0)
+    glVertex3f(-l, 0.0, 0.0)
+    glVertex3f(l, 0.0, 0.0)
     glColor3f(0.0, 1.0, 0.0)
-    glVertex3f(0.0, -5.0, 0.0)
-    glVertex3f(0.0, 5.0, 0.0)
+    glVertex3f(0.0, -l, 0.0)
+    glVertex3f(0.0, l, 0.0)
     glColor3f(0.0, 0.0, 1.0)
-    glVertex3f(0.0, 0.0, -5.0)
-    glVertex3f(0.0, 0.0, 5.0)
+    glVertex3f(0.0, 0.0, -l)
+    glVertex3f(0.0, 0.0, l)
     glEnd()
 
 
@@ -406,7 +406,33 @@ class Egg:
         return (-90 * u5 + 225 * u4 - 270 * u3 + 180 * u2 - 45 * u) * numpy.sin(numpy.pi * v) * self.scaling
 
 
-class Sphere(Egg):
+class BetterEgg(Egg):
+    def draw_triangles(self):
+        if self.colorWasNone:
+            for u0, u1, colorU0, colorU1 in zip(self.points, self.points[1:], self.vertexColors, self.vertexColors[1:]):
+                glBegin(GL_TRIANGLE_STRIP)
+                for v0, v1, color0, color1 in zip(u0, u1, colorU0, colorU1):
+                    point = v0 + self.translation
+                    glColor3f(color0[0], color0[1], color0[2])
+                    glVertex3f(point.x, point.y, point.z)
+
+                    point = v1 + self.translation
+                    glColor3f(color1[0], color1[1], color1[2])
+                    glVertex3f(point.x, point.y, point.z)
+                glEnd()
+        else:
+            glColor3f(self.color[0], self.color[1], self.color[2])
+            for u0, u1 in zip(self.points, self.points[1:]):
+                glBegin(GL_TRIANGLE_STRIP)
+                for v0, v1 in zip(u0, u1):
+                    point = v0 + self.translation
+                    glVertex3f(point.x, point.y, point.z)
+
+                    point = v1 + self.translation
+                    glVertex3f(point.x, point.y, point.z)
+                glEnd()
+
+class Sphere(BetterEgg):
     def x_from(self, u, v):
         return numpy.sin(numpy.pi * v) * numpy.sin(2 * numpy.pi * u) * self.scaling
 
@@ -415,3 +441,4 @@ class Sphere(Egg):
 
     def z_from(self, u, v):
         return numpy.sin(2 * numpy.pi * u) * numpy.cos(numpy.pi * v) * self.scaling
+

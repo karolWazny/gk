@@ -26,7 +26,7 @@ class ThreeBodiesRenderer(Renderer):
         self.system.updateVelocity()
         self.system.updatePosition()
         self.system.draw()
-        # common.spin(0.2)
+        common.spin(-0.15)
 
 
 if __name__ == '__main__':

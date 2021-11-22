@@ -161,6 +161,10 @@ def render(time, window=None):
 
 def update_viewport(window, width, height):
     global pix2angle
+    if width == 0:
+        width = 1
+    if height == 0:
+        height = 1
     pix2angle = 360.0 / width
 
     glMatrixMode(GL_PROJECTION)
