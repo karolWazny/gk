@@ -258,6 +258,7 @@ def spin(angle):
 
 class Egg:
     def __init__(self, samples=5, scaling=1, translation=Point(), mode="points", color=None):
+        self.showNormals = False
         self.colorWasNone = color is None
         self.translation = translation
         self.samples = samples
@@ -297,9 +298,14 @@ class Egg:
         else:
             self.color = numpy.array([1.0, 1.0, 0.0])
 
+    def set_showNormals(self, value):
+        self.showNormals = value
+
     def calculate_normal(self, u, v):
         if u == 0 or u == 1:
             return Point(0, -1, 0)
+        if u == 0.5:
+            return Point(0, 1, 0)
         u2 = u * u
         u3 = u2 * u
         u4 = u3 * u
@@ -328,6 +334,18 @@ class Egg:
             self.draw_triangles()
         else:
             self.draw_points()
+        if self.showNormals:
+            self.drawNormals()
+
+    def drawNormals(self):
+        glBegin(GL_LINES)
+        for row, normRow in zip(self.points, self.normals):
+            for vertex, normal in zip(row, normRow):
+                vertexToDraw = vertex + self.translation
+                normalEnd = vertexToDraw + normal
+                glVertex3f(vertexToDraw.x, vertexToDraw.y, vertexToDraw.z)
+                glVertex3f(normalEnd.x, normalEnd.y, normalEnd.z)
+        glEnd()
 
     def draw_triangles(self):
         glBegin(GL_TRIANGLES)
