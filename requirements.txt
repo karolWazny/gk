@@ -1,2 +1,4 @@
 numpy~=1.21.2
 glfw~=2.3.0
+Pillow~=8.4.0
+PyGLM
