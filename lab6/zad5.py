@@ -338,27 +338,27 @@ class TexturedEgg(Egg):
                 above_uv = self.uv_points[u][v]
 
                 glNormal3f(normal.x, normal.y, normal.z)
-                glTexCoord2f(uv["u"] * 2, uv["v"])
+                glTexCoord2f(uv["v"], uv["u"] * 2)
                 glVertex3f(point.x, point.y, point.z)
 
                 glNormal3f(aboveNormal.x, aboveNormal.y, aboveNormal.z)
-                glTexCoord2f(above_uv["u"] * 2, above_uv["v"])
+                glTexCoord2f(above_uv["v"], above_uv["u"] * 2)
                 glVertex3f(abovePoint.x, abovePoint.y, abovePoint.z)
 
                 glNormal3f(secondNormal.x, secondNormal.y, secondNormal.z)
-                glTexCoord2f(second_uv["u"] * 2, second_uv["v"])
+                glTexCoord2f(second_uv["v"], second_uv["u"] * 2)
                 glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
 
                 glNormal3f(normal.x, normal.y, normal.z)
-                glTexCoord2f(uv["u"] * 2, uv["v"])
+                glTexCoord2f(uv["v"], uv["u"] * 2)
                 glVertex3f(point.x, point.y, point.z)
 
                 glNormal(secondNormal.x, secondNormal.y, secondNormal.z)
-                glTexCoord2f(second_uv["u"] * 2, second_uv["v"])
+                glTexCoord2f(second_uv["v"], second_uv["u"] * 2)
                 glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
 
                 glNormal(belowNormal.x, belowNormal.y, belowNormal.z)
-                glTexCoord2f(below_uv["u"] * 2, below_uv["v"])
+                glTexCoord2f(below_uv["v"], below_uv["u"] * 2)
                 glVertex3f(belowPoint.x, belowPoint.y, belowPoint.z)
 
         for u in range(self.middleSample, self.samples):
@@ -381,27 +381,27 @@ class TexturedEgg(Egg):
                 above_uv = self.uv_points[u][v]
 
                 glNormal3f(normal.x, normal.y, normal.z)
-                glTexCoord2f(1 - uv["u"] * 2, 1 - uv["v"])
+                glTexCoord2f(1 - uv["v"], 1 - uv["u"] * 2)
                 glVertex3f(point.x, point.y, point.z)
 
                 glNormal3f(secondNormal.x, secondNormal.y, secondNormal.z)
-                glTexCoord2f(1 - 2 * second_uv["u"], 1 - second_uv["v"])
+                glTexCoord2f(1 - second_uv["v"], 1 - 2 * second_uv["u"])
                 glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
 
                 glNormal3f(aboveNormal.x, aboveNormal.y, aboveNormal.z)
-                glTexCoord2f(1 - 2 * above_uv["u"], 1 - above_uv["v"])
+                glTexCoord2f(1 - above_uv["v"], 1 - 2 * above_uv["u"])
                 glVertex3f(abovePoint.x, abovePoint.y, abovePoint.z)
 
                 glNormal3f(normal.x, normal.y, normal.z)
-                glTexCoord2f(1 - 2 * uv["u"], 1 - uv["v"])
+                glTexCoord2f(1 - uv["v"], 1 - 2 * uv["u"])
                 glVertex3f(point.x, point.y, point.z)
 
                 glNormal(belowNormal.x, belowNormal.y, belowNormal.z)
-                glTexCoord2f(1 - 2 * below_uv["u"], 1 - below_uv["v"])
+                glTexCoord2f(1 - below_uv["v"], 1 - 2 * below_uv["u"])
                 glVertex3f(belowPoint.x, belowPoint.y, belowPoint.z)
 
                 glNormal(secondNormal.x, secondNormal.y, secondNormal.z)
-                glTexCoord2f(1 - 2 * second_uv["u"], 1 - second_uv["v"])
+                glTexCoord2f(1 - second_uv["v"], 1 - 2 * second_uv["u"])
                 glVertex3f(secondPoint.x, secondPoint.y, secondPoint.z)
         glEnd()
 
@@ -438,7 +438,7 @@ def startup():
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 
-    image = Image.open("tekstura.tga")
+    image = Image.open("piesel_tekstura.tga")
 
     glTexImage2D(
         GL_TEXTURE_2D, 0, 3, image.size[0], image.size[1], 0,
