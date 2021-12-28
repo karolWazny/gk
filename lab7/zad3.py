@@ -12,6 +12,7 @@ from OpenGL.GLU import *
 rendering_program = None
 vertex_array_object = None
 vertex_buffer = None
+color_buffer = None
 
 P_matrix = None
 
@@ -84,6 +85,7 @@ def startup():
     global rendering_program
     global vertex_array_object
     global vertex_buffer
+    global color_buffer
 
     print("OpenGL {}, GLSL {}\n".format(
         glGetString(GL_VERSION).decode('UTF-8').split()[0],
@@ -217,10 +219,13 @@ def shutdown():
     global rendering_program
     global vertex_array_object
     global vertex_buffer
+    global color_buffer
 
     glDeleteProgram(rendering_program)
     glDeleteVertexArrays(1, vertex_array_object)
     glDeleteBuffers(1, vertex_buffer)
+
+    glDeleteBuffers(1, color_buffer)
 
 
 def render(time):
